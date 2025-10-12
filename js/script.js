@@ -151,7 +151,7 @@ function renderInvitation(data) {
     if (data.kisah_cinta) {
         const kisahSection = document.createElement("section");
         kisahSection.className = "py-16 text-center px-6 bg-white bg-center";
-        kisahSection.style.backgroundImage = "url('./assets/bg5.jpg')";
+        kisahSection.style.backgroundImage = "url('./assets/bg1.jpg')";
         kisahSection.innerHTML = `
       <h2 class="text-5xl font-bold mb-6">Our Love Story</h2>
       <div class="section-ornament"></div>
