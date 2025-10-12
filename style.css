@@ -1,0 +1,368 @@
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body, p, button, input, textarea, div {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+#cover {
+  opacity: 1;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  background-size: cover;
+  background-position: center;
+}
+
+#cover.hidden {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.tab-btn.active {
+  color: #d97706;
+  font-weight: 600;
+}
+
+/* Ornamen */
+.section-ornament {
+  width: 120px;
+  margin: 1.5rem auto;
+  border-top: 4px solid #fbbf24;
+  border-radius: 2px;
+}
+
+.title-ornament {
+  width: 120px;
+  margin: 0.8rem auto;
+  border-top: 3px solid #ffdd88;
+  border-radius: 2px;
+}
+
+/* Animasi */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.zoom-in {
+  transform: scale(0.9);
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+
+.zoom-in.show {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.slide-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.box-container {
+  background: rgba(255, 255, 255, 0.849);
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  box-shadow: rgba(0, 0, 0, 0.205) 0px 4px 12px;
+  backdrop-filter: blur(3px);
+}
+
+.transparent-box {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  box-shadow: rgba(0, 0, 0, 0.205) 0px 4px 12px;
+}
+
+.transparent-box p {
+  font-family: 'poppins', sans-serif;
+}
+
+/* Countdown highlight */
+#countdown {
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#rsvp-list .border-l-2 {
+  border-color: #fbbf24;
+  /* amber-400 */
+}
+
+#rsvp-list .reply-btn:hover {
+  text-decoration: none;
+  color: #b45309;
+  /* amber-700 */
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+button svg {
+  transition: transform 0.4s ease;
+}
+
+button:hover svg {
+  transform: rotate(10deg) scale(1.1);
+}
+
+/* === Animasi Bounce Halus === */
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.btn-bounce {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  background: linear-gradient(to right, #fbbf24, #f59e0b);
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  animation: bounce-soft 2.2s infinite;
+  box-shadow: 0 3px 8px rgba(251, 191, 36, 0.4);
+}
+
+.btn-bounce:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 12px rgba(251, 191, 36, 0.5);
+}
+
+.btn-bounce svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* === Scroll Indicator di Hero === */
+.scroll-indicator {
+  position: fixed;
+  display: flex;
+  left: 45%;
+  flex-direction: column;
+  bottom: -30%;
+  transform: translateX(-50%);
+  color: white;
+  opacity: 0.8;
+  align-items: center;
+  animation: bounce-soft 1.8s infinite;
+}
+
+.scroll-indicator svg {
+  width: 24px;
+  height: 24px;
+}
+
+.scroll-indicator span {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+  align-items: center;
+}
+
+.element-bounce {
+  animation: bounce-soft 2.5s infinite;
+  animation-direction: reverse;
+}
+
+/* === 1. ANIMASI PERUBAHAN WARNA SOFT & INFINITE === */
+@keyframes colorShift {
+  0% {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  }
+
+  25% {
+    background: linear-gradient(90deg, #f59e0b, #ec4899);
+  }
+
+  50% {
+    background: linear-gradient(90deg, #ec4899, #6366f1);
+  }
+
+  75% {
+    background: linear-gradient(90deg, #6366f1, #22c55e);
+  }
+
+  100% {
+    background: linear-gradient(90deg, #22c55e, #fbbf24);
+  }
+}
+
+.btn-colorflow {
+  animation: colorShift 8s linear infinite;
+  background-size: 200% 200%;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-colorflow:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Gunakan bersama btn-bounce agar terlihat hidup */
+.btn-colorflow.btn-bounce {
+  animation: bounce-soft 2.2s infinite, colorShift 8s linear infinite;
+}
+
+/* === 2. ANIMASI ZOOM-IN SAAT SCROLL (Fade + Scale) === */
+@keyframes softZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.scroll-zoom {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.8s ease, transform 1s ease;
+}
+
+.scroll-zoom.show {
+  animation: softZoomIn 0.9s ease forwards;
+}
+
+/* === KONFETI DAN FLORAL === */
+.confetti, .floral {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* Bunga jatuh */
+.flower {
+  position: absolute;
+  top: -50px;
+  font-size: 1.2rem;
+  opacity: 0.9;
+  animation: fall 8s linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.1;
+  }
+}
+
+/* === SECTION SHADOW (Bayangan di bawah setiap section) === */
+.section-shadow {
+  position: relative;
+  z-index: 1;
+}
+
+.section-shadow::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  /* jarak bayangan dari section */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, transparent 80%);
+  filter: blur(4px);
+  z-index: -1;
+  opacity: 0.7;
+}
+
+/* --- opsional: versi lembut untuk section terang --- */
+.section-light::after {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.08) 0%, transparent 80%);
+}
+.toast-alert {
+    background-color: #333;
+    color: #111;
+    padding: 12px 18px;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 200px;
+    max-width: 320px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-alert.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success {
+    background-color: #5c9e6c;
+}
+
+.toast-error {
+    background-color: #dd979e;
+}
+
+.toast-info {
+    background-color: #a8cff8;
+}
