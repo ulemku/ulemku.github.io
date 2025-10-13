@@ -68,6 +68,7 @@ function renderInvitation(data) {
 
     // === Countdown ===
     const countdown = document.getElementById("countdown");
+    const countdown2 = document.getElementById("countdown2");
     function updateCountdown() {
         const now = new Date();
         const diff = eventDate - now;
@@ -78,6 +79,7 @@ function renderInvitation(data) {
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
         countdown.textContent = `${d} hari ${h} jam lagi`;
+        countdown2.textContent = `${d} hari ${h} jam lagi`;
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
@@ -85,8 +87,8 @@ function renderInvitation(data) {
     // === Foto dan Info ===
     document.getElementById("groom-img").src = data.foto_pria || "https://cdn.pixabay.com/photo/2015/11/19/03/16/son-in-law-1050289_1280.jpg";
     document.getElementById("bride-img").src = data.foto_wanita || "https://cdn.pixabay.com/photo/2020/09/10/14/11/model-5560527_960_720.jpg";
-    document.getElementById("groom-name").textContent = data.pria;
-    document.getElementById("bride-name").textContent = data.wanita;
+    document.getElementById("groom-name").textContent = data.pria || "Agus";
+    document.getElementById("bride-name").textContent = data.wanita || "Siti";
     document.getElementById("groom-info").textContent = data.pria_info || "";
     document.getElementById("bride-info").textContent = data.wanita_info || "";
 
@@ -153,7 +155,7 @@ function renderInvitation(data) {
         kisahSection.className = "py-16 text-center px-6 bg-white bg-center";
         kisahSection.style.backgroundImage = "url('./assets/bg1.jpg')";
         kisahSection.innerHTML = `
-      <h2 class="text-5xl font-bold mb-6">Our Love Story</h2>
+      <h2 class="text-5xl font-bold mb-6">🌿 Our Love Story</h2>
       <div class="section-ornament"></div>
       <p class="max-w-xl mx-auto text-slate-700">${data.kisah_cinta}</p>
     `;
@@ -239,7 +241,7 @@ async function loadRSVPs(invId, unikId) {
         <div class="font-bold">${r.guest_name}</div>
         <div class="text-sm text-slate-500">${r.attendance} • ${timeAgo(r.created_at)}</div>
         <p class="mt-2 text-slate-700">${r.message || ""}</p>
-        <button class="mt-2 text-amber-600 text-sm underline reply-btn" data-id="${r.id}">Balas</button>
+        <button class="mt-2 text-amber-600 text-sm reply-btn font-bold" data-id="${r.id}">Balas</button>
 
         <div class="ml-4 mt-3 space-y-2">
           ${childReplies.map(rep => `
@@ -457,7 +459,7 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 // ==== COPY BUTTON ====
 function copyText(txt) {
     navigator.clipboard.writeText(txt);
-    showAlert("Tersalin: " + txt, "info");
+    showAlert(txt + "Sudah tersalin", "info");
 }
 
 // INIT

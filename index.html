@@ -26,7 +26,7 @@
         <div class="relative z-10 p-6">
             <h2 class="text-amber-500 text-2xl font-bold mb-10 zoom-in">The Wedding of</h2>
             <h1 id="cover-couple" class="text-4xl md:text-6xl font-bold mb-10">Agus & Dewi</h1>
-            <p class="text-md mb-4">Kepada Yth.</p>
+            <p class="text-md mb-4">D E A R</p>
             <p id="cover-guest" class="font-semibold mb-8 text-2xl">Tamu Undangan</p>
 
             <button id="open-invite" class="btn-bounce btn-colorflow mt-6">
@@ -46,11 +46,13 @@
         <div id="hero-bg" class="absolute inset-0 bg-cover bg-center"></div>
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-10 p-6 fade-in">
-            <h2 class="text-amber-300 text-2xl font-bold mb-4 zoom-in">Undangan Pernikahan</h2>
-            <h1 id="couple-names" class="text-5xl md:text-6xl font-bold mb-8"></h1>
+            <h2 class="text-amber-300 text-2xl font-bold mb-4 zoom-in">The Wedding of</h2>
+            <h1 id="couple-names" class="text-5xl md:text-6xl font-bold mb-8 zoom-in"></h1>
+            <p class="text-md mb-4 font-sans text-md">SAVE THE DATE</p>
             <div class="transparent-box">
                 <p id="event-date" class="text-lg md:text-2xl font-semibold fade-in"></p>
             </div>
+             <div id="countdown" class="mt-6 mb-4 text-xl font-medium text-amber-600"></div>
 
             <div class="scroll-indicator">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
@@ -77,7 +79,7 @@
             <img id="groom-img" alt="Mempelai Pria"
                 class="mx-auto w-48 h-48 object-cover rounded-full shadow-lg scroll-zoom element-bounce">
             <h3 id="groom-name" class="text-3xl font-semibold mt-4 text-amber-500">Mempelai Pria</h3>
-            <p id="groom-info" class="text-slate-600 max-w-sm mx-auto"></p>
+            <p id="groom-info" class="text-slate-600 max-w-sm mx-auto mt-4"></p>
         </div>
 
         <!-- Mempelai Wanita -->
@@ -85,13 +87,13 @@
             <img id="bride-img" alt="Mempelai Wanita"
                 class="mx-auto w-48 h-48 object-cover rounded-full shadow-lg scroll-zoom element-bounce">
             <h3 id="bride-name" class="text-3xl font-semibold mt-4 text-amber-500">Mempelai Wanita</h3>
-            <p id="bride-info" class="text-slate-600 max-w-sm mx-auto"></p>
+            <p id="bride-info" class="text-slate-600 max-w-sm mx-auto mt-4"></p>
         </div>
 
-        <h2 class="text-5xl mt-20 font-bold zoom-in">Detail Acara</h2>
+        <h2 class="text-5xl mt-20 font-bold zoom-in">☘️ Detail Acara</h2>
         <div class="section-ornament"></div>
-        <p id="event-date2" class="text-2xl font-semibold"></p>
-        <div id="countdown" class="mt-6 mb-4 text-xl font-medium"></div>
+        <p id="event-date2" class="text-2xl font-semibold scroll-zoom"></p>
+        <div id="countdown2" class="mt-6 mb-4 text-xl font-medium text-amber-600"></div>
         <div class="text-center mt-4 mb-6">
             <button id="add-calendar-btn" class="btn-bounce">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24"
@@ -103,13 +105,13 @@
             </button>
         </div>
         <p class="text-2xl font-bold">Akad Nikah</p>
-        <p id="akad-time" class="text-lg font-semibold text-slate-600 mb-4"></p>
+        <p id="akad-time" class="text-lg font-semibold text-amber-600 mb-4"></p>
 
         <p class="text-2xl font-bold mt-4">Resepsi</p>
-        <p id="resepsi-time" class="text-lg font-semibold text-slate-600"></p>
+        <p id="resepsi-time" class="text-lg font-semibold text-amber-600"></p>
 
-        <p class="text-2xl font-bold mt-6">Tempat</p>
-        <p id="event-location" class="text-lg font-semibold text-slate-600 mb-4"></p>
+        <p class="text-2xl font-bold mt-6">Lokasi Acara</p>
+        <p id="event-location" class="text-lg font-semibold text-amber-600 mb-4"></p>
 
 
         <div class="text-center mt-6">
@@ -128,9 +130,9 @@
 
 
     <!-- GALERI -->
-    <section id="galeri" class="py-16 bg-slate-100 text-center px-6 hidden bg-center"
+    <section id="galeri" class="py-16 bg-slate-100 text-center px-6 hidden bg-center bg-white"
         style="background-image: url('./assets/bg4.jpg');">
-        <h2 class="text-5xl font-bold mb-6">Galeri</h2>
+        <h2 class="text-5xl font-bold mb-6 zoom-in">🍂 Galeri</h2>
         <div class="section-ornament"></div>
         <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
     </section>
@@ -138,7 +140,7 @@
     <!-- GIFT -->
     <section id="gift" class="py-16 text-center px-6 hidden bg-center section-shadow"
         style="background-image: url('./assets/bg5.jpg');">
-        <h2 class="mb-4 text-5xl font-bold">Love Gift</h2>
+        <h2 class="mb-4 text-5xl font-bold zoom-in">💝 Love Gift</h2>
         <div class="section-ornament"></div>
         <p class="mb-6">Merupakan suatu kebahagiaan bagi kami<br>apabila Anda berkenan hadir untuk memberikan doa restu
             kepada kami<br>Namun, bagi Anda yang ingin memberikan tanda kasih dapat melalui:</p>
@@ -147,7 +149,7 @@
 
     <!-- RSVP -->
     <section id="rsvp" class="py-16 px-6 hidden bg-center section-light" style="background-image: url('./assets/bg3.jpg');">
-        <h2 class="text-5xl text-center mb-6">Ucapan & Konfirmasi</h2>
+        <h2 class="text-5xl text-center mb-6 font-bold zoom-in">💌 Ucapan & Konfirmasi</h2>
         <div class="section-ornament"></div>
         <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow">
             <p id="rsvp-guest-label" class="text-center text-slate-700 mb-3 font-bold"></p>
@@ -180,28 +182,28 @@
 
         <h2 class="text-3xl mb-7">Wassalamualaikum Warahmatullahi Wabarakatuh</h2>
         <h2 class="text-3xl mb-4">اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ</h2>
-        <h1 id="couple-names2" class="text-5xl md:text-6xl font-bold mt-8 mb-8"></h1>
+        <h1 id="couple-names2" class="text-5xl md:text-6xl font-bold mt-8 mb-8 zoom-in"></h1>
 
     </section>
-    <footer class="text-center text-slate-500 text-sm py-4">
-        Created with ❤️ by <a href="https://creativevector.store/" class="underline">CreatiVector</a><br>Images and audio by <a href="https://pixabay.com/users/hansuan_fabregas-2902307/" class="underline">Hansuan_Fabregas</a>, <a href="https://pixabay.com/illustrations/flowers-floral-design-pattern-5773524/" class="underline">Kollsd</a> and <a href="https://pixabay.com/music/modern-classical-pure-love-304010/" class="underline">Pure Love audio</a> on <a href="https://pixabay.com/" class="underline">Pixabay</a><br>Contact Person :<br>Email <a
-            href="mailto:info@creativevector.store?subject=SeratUlem Info" class="underline" target="_blank">info@creativevector.store</a> | Whatsapp <a
-            href="https://wa.me/628975650444" class="underline" target="_blank">+62-897-565-0444</a>
+    <footer class="text-center text-slate-500 text-sm py-4 mb-15">
+        Created with ❤️ by <a href="https://creativevector.store/" class="underline">CreatiVector</a><br>Contact Person :<br><a
+            href="mailto:info@creativevector.store?subject=SeratUlem Info" class="underline" target="_blank">Email</a> | <a
+            href="https://wa.me/628975650444" class="underline" target="_blank">WhatsApp</a><br>Images and audio by <a href="https://pixabay.com/users/hansuan_fabregas-2902307/" class="underline">Hansuan_Fabregas</a>, <a href="https://pixabay.com/illustrations/flowers-floral-design-pattern-5773524/" class="underline">Kollsd</a> and <a href="https://pixabay.com/music/modern-classical-pure-love-304010/" class="underline">Pure Love audio</a> on <a href="https://pixabay.com/" class="underline">Pixabay</a>
     </footer>
 
     <!-- TAB BAWAH -->
     <nav id="bottom-nav"
-        class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md flex justify-around py-2 md:hidden z-50 hidden">
-        <button data-target="hero" class="tab-btn text-center text-sm text-slate-600"><span>🏠</span>
-            <div>Home</div>
+        class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md flex justify-around py-2 md:hidden z-50 hidden mt-10">
+        <button data-target="hero" class="tab-btn text-center text-sm text-slate-600"><span>🌿</span>
+            <div>Cover</div>
         </button>
-        <button data-target="acara" class="tab-btn text-center text-sm text-slate-600"><span>📅</span>
+        <button data-target="acara" class="tab-btn text-center text-sm text-slate-600"><span>☘️</span>
             <div>Acara</div>
         </button>
-        <button data-target="galeri" class="tab-btn text-center text-sm text-slate-600"><span>🖼️</span>
+        <button data-target="galeri" class="tab-btn text-center text-sm text-slate-600"><span>🍂</span>
             <div>Galeri</div>
         </button>
-        <button data-target="gift" class="tab-btn text-center text-sm text-slate-600"><span>🎁</span>
+        <button data-target="gift" class="tab-btn text-center text-sm text-slate-600"><span>💝</span>
             <div>Gift</div>
         </button>
         <button data-target="rsvp" class="tab-btn text-center text-sm text-slate-600"><span>💌</span>
