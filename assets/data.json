@@ -1,0 +1,34 @@
+{
+  "pria": "Agus",
+  "wanita": "Siti",
+  "tanggal_nikah": "2025-12-31",
+  "akad_nikah": "08:00:00",
+  "resepsi": "10:00:00",
+  "nama_lokasi": "Gedung Serbaguna Srimulyo",
+  "url_maps": "https://maps.app.goo.gl/emCmLo5iVni2dGH2A",
+  "foto_pasangan": "https://cdn.pixabay.com/photo/2022/11/27/08/05/garland-7619074_1280.jpg",
+  "foto_pria": "https://cdn.pixabay.com/photo/2015/11/19/03/16/son-in-law-1050289_1280.jpg",
+  "foto_wanita": "https://cdn.pixabay.com/photo/2020/09/10/14/11/model-5560527_960_720.jpg",
+  "pria_info": "Putra pertama Bp. Kasdi dan Ibu Untung",
+  "wanita_info": "Putri ketiga Bp. Mariyo dan Ibu Sutinah",
+  "kisah_cinta": "Inilah kisah cinta mereka—dimulai dari pertemuan sederhana hingga melangkah ke jenjang pernikahan.",
+  "catatan": "Mohon konfirmasi kehadiran melalui form di bawah. Terima kasih.",
+  "transfer_info": [
+    {
+      "Via": "DANA",
+      "Name": "Agus",
+      "Number": "085812345678"
+    },
+    {
+      "Via": "Bank BCA",
+      "Name": "Siti",
+      "Number": "564515645151"
+    },
+    {
+      "Via": "Kirim Hadiah",
+      "Name": "Adam",
+      "Number": "085856454578",
+      "Address": "Srimulyo, RT 30, Srimulyo, Gondang, Sragen, 57254"
+    }
+  ]
+}

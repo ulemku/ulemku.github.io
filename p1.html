@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Undangan Pernikahan</title>
+  <link rel="stylesheet" href="style/p1.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=creattion&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="stylesheet" href="./assets/Creattion-Ea9Ag.otf" />
+  <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+  <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="023a8e60-fc10-4a56-8a68-eb52460eda65"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.6/dist/umd/supabase.min.js"></script>
+</head>
+
+<!-- s1?unik_id=adam-hawa&to=Joko%20dan%20Sari -->
+
+<!-- LOADING OVERLAY -->
+<div id="loading-screen">
+  <div class="loader-content">
+    <div class="loader-ring"></div>
+    <p class="loader-text">Menyiapkan Undangan...</p>
+  </div>
+</div>
+
+<body class="antialiased bg-slate-50 text-slate-800 font-sans">
+  <div id="globalAlertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+  <div id="confetti" class="confetti"></div>
+
+  <!-- ==== COVER PEMBUKA ==== -->
+  <section id="cover"
+    class="fixed inset-0 flex flex-col justify-center items-center text-center bg-cover bg-center text-white z-50 transition-all duration-700"
+    style="background-image:url('https://cdn.pixabay.com/photo/2022/11/27/08/05/garland-7619074_1280.jpg');">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 p-6">
+      <h2 class="text-2xl mb-10 zoom-in">The Wedding of</h2>
+      <h1 id="cover-couple" class="text-4xl md:text-6xl font-bold mb-10 parisienne">Agus & Dewi</h1>
+      <p class="text-md mb-4">D E A R</p>
+      <p id="cover-guest" class="font-bold mb-8 text-2xl">Tamu Undangan</p>
+
+      <button id="open-invite" class="btn-bounce mt-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          class="w-5 h-5 animate-bounce">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <polyline points="3 7 12 13 21 7" />
+        </svg>
+        Buka Undangan
+      </button>
+    </div>
+  </section>
+
+  <!-- Floating music control -->
+  <button id="music-toggle" aria-label="Pause music" title="Pause / Play Musik"
+    class="fixed z-50 right-4 bottom-20 w-12 h-12 rounded-full shadow-lg bg-white flex items-center justify-center">
+    <!-- icon inserted by JS -->
+    <svg id="music-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-500" fill="text-slate-500"
+      viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5v14l11-7z" />
+    </svg>
+  </button>
+
+  <!-- ==== KONTEN UNDANGAN ==== -->
+  <section id="hero"
+    class="relative min-h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden hidden">
+    <div id="hero-bg" class="absolute inset-0 bg-cover bg-center"></div>
+
+    <div class="absolute inset-0 bg-black/40"></div>
+
+    <div class="grid z-10 p-6 fade-in">
+
+      <h2 class="text-2xl mb-10 zoom-in">The Wedding of</h2>
+
+      <h1 id="couple-names" class="stacked-names text-5xl md:text-6xl font-bold animate-zoom"></h1>
+
+      <p class="text-1xl mb-4 mt-7">SAVE THE DATE</p>
+
+      <div class="transparent-box">
+        <p id="event-date" class="text-lg md:text-2xl animate"></p>
+      </div>
+
+      <div id="countdown-box" class="countdown-box animate">
+        <div class="time-box">
+          <span id="days">00</span>
+          <label>Hari</label>
+        </div>
+        <div class="time-box">
+          <span id="hours">00</span>
+          <label>Jam</label>
+        </div>
+        <div class="time-box">
+          <span id="minutes">00</span>
+          <label>Menit</label>
+        </div>
+        <div class="time-box">
+          <span id="seconds">00</span>
+          <label>Detik</label>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+        <span>Scroll</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ACARA -->
+  <section id="acara" class="py-16 text-center px-6 hidden bg-center bg-slate-200">
+    <h2 class="text-3xl mb-4">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h2>
+    <h2 class="text-3xl mb-4">Assalamualaikum Warahmatullahi Wabarakatuh</h2>
+    <p class="max-w-md mx-auto">
+      Tanpa mengurangi rasa hormat<br>Kami mengundang anda untuk menghadiri acara pernikahan kami:
+    </p>
+
+    <!-- Mempelai Pria -->
+    <div class="mt-10">
+      <img id="groom-img" alt="Mempelai Pria" class="mx-auto object-cover groom-img mb-5 animate-slide">
+      <div class="transparent-name-box animate">
+        <h3 id="groom-name" class="text-2xl mt-4 mb-4 font-bold">Mempelai</h3>
+        <div class="title-ornament"></div>
+        <p id="groom-info" class="text-slate-600 max-w-sm mx-auto align-left p-3"></p>
+      </div>
+
+    </div>
+    <!-- Mempelai Wanita -->
+    <div class="mt-10 mb-10">
+      <img id="bride-img" alt="Mempelai Wanita" class="mx-auto object-cover bride-img mb-5 animate-slide2">
+      <div class="transparent-name-box animate">
+        <h3 id="bride-name" class="text-2xl mt-4 mb-4 font-bold">Mempelai</h3>
+        <div class="title-ornament"></div>
+        <p id="bride-info" class="text-slate-600 max-w-sm mx-auto align-left p-3"></p>
+      </div>
+    </div>
+
+    <!-- <h2 class="text-5xl mt-20 font-bold zoom-in">☘️ Event</h2> -->
+    <div class="stacked-title mb-8 animate-zoom">
+      <h1 id="stack-main" class="stack-large">Wedding</h1>
+      <h2 id="stack-sub" class="stack-small opacity-90">Event</h2>
+    </div>
+
+    <p id="event-date2" class="text-2xl font-semibold scroll-zoom"></p>
+    <div id="countdown-box" class="countdown-box2">
+      <div class="time-box2">
+        <span id="days2">00</span>
+        <label>Hari</label>
+      </div>
+      <div class="time-box2">
+        <span id="hours2">00</span>
+        <label>Jam</label>
+      </div>
+      <div class="time-box2">
+        <span id="minutes2">00</span>
+        <label>Menit</label>
+      </div>
+      <div class="time-box2">
+        <span id="seconds2">00</span>
+        <label>Detik</label>
+      </div>
+    </div>
+    <div class="text-center mt-4 mb-6">
+      <button id="add-calendar-btn" class="btn-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M8 7V3m8 4V3m-9 8h10m-11 8h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        Simpan ke Google Calendar
+      </button>
+    </div>
+    <div class="text-center mb-4 animate-slide">
+      <p class="text-2xl font-bold">Akad Nikah</p>
+      <p id="akad-time" class="text-lg font-semibold"></p>
+    </div>
+    <div class="text-center mb-4 animate-slide2">
+      <p class="text-2xl font-bold mt-4">Resepsi</p>
+      <p id="resepsi-time" class="text-lg font-semibold"></p>
+    </div>
+    <div class="text-center mb-4 animate-slide">
+      <p class="text-2xl font-bold mt-6">Lokasi Acara</p>
+      <p id="event-location" class="text-lg font-semibold"></p>
+    </div>
+
+
+
+
+
+
+    <div class="text-center mt-6">
+      <a id="maps-link" target="_blank" class="btn-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          class="w-5 h-5 animate-bounce">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-7.58 8-14A8 8 0 104 8c0 6.42 8 14 8 14z" />
+        </svg>
+        Lihat di Google Maps
+      </a>
+    </div>
+  </section>
+
+
+  <!-- GALERI -->
+  <section id="galeri" class="py-16 text-center px-6 hidden bg-center bg-white">
+    <div class="stacked-title mb-8 animate-zoom">
+      <h1 id="stack-main" class="stack-large">Our Moment</h1>
+      <h2 id="stack-sub" class="stack-small opacity-90">Gallery</h2>
+    </div>
+    <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+  </section>
+
+  <section id="story" class="py-16 text-center px-6 bg-slate-200 bg-center">
+    <div class="stacked-title mb-8 animate-zoom">
+      <h1 id="stack-main" class="stack-large">Our Love</h1>
+      <h2 id="stack-sub" class="stack-small opacity-90">Story</h2>
+    </div>
+    <p class="max-w-xl mx-auto text-slate-700">Takdir mempertemukan dua hati di waktu yang tepat, bukan terlalu cepat,
+      bukan pula terlalu lambat.
+      Kami dipertemukan bukan sekadar untuk saling mengenal, tetapi untuk saling melengkapi.
+      Dari pertemuan yang sederhana, tumbuhlah rasa yang tulus dan doa yang tak pernah padam.
+      Langkah demi langkah kami lalui bersama, hingga akhirnya Allah menuntun kami ke jalan yang lebih suci:<br><br>
+      <strong>Ikatan pernikahan</strong>
+      <br><br>
+      Dalam setiap perjalanan, kami belajar bahwa cinta sejati bukan hanya tentang perasaan,
+      tetapi tentang kesabaran, pengertian, dan keinginan untuk saling menuntun menuju ridha-Nya.
+      Kini, dengan segala kerendahan hati, kami memohon doa restu agar pernikahan ini menjadi awal
+      dari kehidupan yang penuh berkah dan kasih sayang.
+      <br><br>
+
+      <strong>“Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan untukmu pasangan-pasangan dari jenismu
+        sendiri,<br>
+        agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.”
+        (QS. Ar-Rum: 21)</strong>
+      <br><br>
+
+      Semoga cinta yang tumbuh ini selalu bernaung dalam ridha Allah,
+      menjadi sakinah di kala lelah, mawaddah di kala bahagia,
+      dan rahmah di sepanjang usia.
+    </p>
+  </section>
+
+
+  <!-- GIFT -->
+  <section id="gift" class="py-16 text-center px-6 hidden bg-center ">
+    <div class="stacked-title mb-8 animate-zoom">
+      <h1 id="stack-main" class="stack-large">L O V E</h1>
+      <h2 id="stack-sub" class="stack-small opacity-90">Gift</h2>
+    </div>
+    <p class="mb-6">Merupakan suatu kebahagiaan bagi kami<br>apabila anda berkenan hadir untuk memberikan doa restu
+      kepada kami<br>Namun, bagi anda yang ingin memberikan tanda kasih dapat melalui:</p>
+    <p class="max-w-md mx-auto mb-6 relative z-10"></p>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp" class="py-16 px-6 hidden bg-center bg-slate-200">
+    <div class="stacked-title mb-8 animate-zoom">
+      <h1 id="stack-main" class="stack-large">Greeting</h1>
+      <h2 id="stack-sub" class="stack-small opacity-90">& Confirmation</h2>
+    </div>
+    <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow">
+      <p id="rsvp-guest-label" class="text-center text-slate-700 mb-3 font-bold"></p>
+      <select id="attendance-input" class="w-full mb-3 border rounded px-3 py-2">
+        <option value="">Pilih Kehadiran...</option>
+        <option value="Hadir">Hadir</option>
+        <option value="Berhalangan">Berhalangan</option>
+        <option value="Belum Tau">Belum Tau</option>
+      </select>
+      <textarea id="message-input" class="w-full mb-3 border rounded px-3 py-2" rows="3"
+        placeholder="Tulis ucapan atau doa..."></textarea>
+
+      <button id="submit-rsvp" class="btn-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+          class="w-5 h-5 animate-bounce">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2L15 22l-4-9-9-4L22 2z" />
+        </svg>
+        Kirim
+      </button>
+    </div>
+
+    <div id="rsvp-list" class="max-w-md mx-auto mt-6 space-y-3"></div>
+
+  </section>
+  <section id="footer" class="py-16 px-6 text-center hidden bg-center bg-white">
+    <p class="max-w-md mx-auto mb-10">
+      Terima kasih atas perhatian dan doa restu anda, yang menjadi kebahagiaan serta kehormatan besar bagi kami.
+    </p>
+
+    <h2 class="text-3xl mb-4">Wassalamualaikum Warahmatullahi Wabarakatuh</h2>
+    <h2 class="text-3xl mb-10">اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ</h2>
+    <p class="max-w-md mx-auto mb-10">
+      Kami yang berbahagia<br>
+    </p>
+    <h1 id="couple-names2" class="text-5xl md:text-6xl font-bold mt-6 mb-5 animate-zoom"></h1>
+
+  </section>
+  <footer class="text-center text-slate-500 text-sm py-4 mb-15">
+    Created with ❤️ by <a href="https://creativevector.store/" class="underline">CreatiVector</a><br>Contact Person
+    :<br><a href="mailto:info@creativevector.store?subject=SeratUlem Info" class="underline" target="_blank">Email</a> |
+    <a href="https://wa.me/628975650444" class="underline" target="_blank">WhatsApp</a><br>Images and audio by <a
+      href="https://pixabay.com/users/hansuan_fabregas-2902307/" class="underline">Hansuan_Fabregas</a>, <a
+      href="https://pixabay.com/illustrations/flowers-floral-design-pattern-5773524/" class="underline">Kollsd</a>
+    and <a href="https://pixabay.com/music/modern-classical-pure-love-304010/" class="underline">Pure Love audio</a>
+    on <a href="https://pixabay.com/" class="underline">Pixabay</a>
+  </footer>
+
+  <!-- TAB BAWAH -->
+  <nav id="bottom-nav"
+    class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md flex justify-around py-2 md:hidden z-50 hidden mt-10">
+    <button data-target="hero" class="tab-btn text-center text-sm text-slate-600"><span>
+        <i class="fa-solid fa-envelope"></i></span>
+      <div>Cover</div>
+    </button>
+    <button data-target="acara" class="tab-btn text-center text-sm text-slate-600"><span><i
+          class="fa-solid fa-calendar-days"></i></span>
+      <div>Event</div>
+    </button>
+    <button data-target="galeri" class="tab-btn text-center text-sm text-slate-600"><span><i
+          class="fa-solid fa-images"></i></span>
+      <div>Gallery</div>
+    </button>
+    <button data-target="gift" class="tab-btn text-center text-sm text-slate-600"><span><i
+          class="fa-solid fa-gift"></i></span>
+      <div>Gift</div>
+    </button>
+    <button data-target="rsvp" class="tab-btn text-center text-sm text-slate-600"><span><i
+          class="fa-solid fa-comments"></i></span>
+      <div>Greeting</div>
+    </button>
+  </nav>
+
+  <!-- MUSIK LATAR -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="./assets/pure-love-304010.mp3" type="audio/mp3">
+  </audio>
+  <script src="./js/show-alert.js"></script>
+  <script src="./js/p1.js"></script>
+</body>
+
+</html>
