@@ -14,9 +14,6 @@ const guestName = getParam("to");
 let isPlaying = false;
 const currentTemplate = "p1";
 
-if (typeof umami !== "undefined" && unik_id) {
-  umami.track("Invitation Opened", { unik_id: unik_id || "default", to: guestName || "Unknown" });
-}
 // ==== COVER ====
 
 document.getElementById("cover-guest").textContent = guestName || "Tamu Undangan";
@@ -144,7 +141,18 @@ function renderInvitation(data) {
   document.getElementById("resepsi-time").textContent = data.resepsi ? `Pukul ${data.resepsi}` : "-";
   document.getElementById("event-location").textContent = data.nama_lokasi || "-";
   document.getElementById("maps-link").href = data.url_maps || "#";
-
+  const mapsLink = document.getElementById("maps-link");
+  if (mapsLink && data.url_maps) {
+    mapsLink.addEventListener("click", () => {
+      if (typeof umami !== "undefined") {
+        umami.track("Open Google Maps", {
+          unik_id: data.unik_id || "default",
+          to: getParam("to") || "Unknown",
+          location: data.nama_lokasi || "Unknown"
+        });
+      }
+    });
+  }
   // === Galeri ===
   try {
     const galContainer = document.getElementById("gallery-container");
@@ -193,6 +201,13 @@ function renderInvitation(data) {
 
     addBtn.addEventListener("click", () => {
       window.open(url.toString(), "_blank");
+
+      if (typeof umami !== "undefined") {
+        umami.track("Add to Google Calendar", {
+          unik_id: data.unik_id || "default",
+          to: getParam("to") || "Unknown"
+        });
+      }
     });
   }
 
@@ -306,6 +321,18 @@ function renderInvitation(data) {
     }
   } catch (e) {
     console.error("Gift error:", e);
+  }
+  try {
+    if (typeof umami !== "undefined") {
+      const params = {
+        unik_id: data.unik_id || getParam("unik_id") || "default",
+        to: getParam("to") || "Unknown",
+        template: data.template_sel || "p1"
+      };
+      umami.track("Invitation Opened", params);
+    }
+  } catch (err) {
+    console.warn("Umami tracking failed:", err);
   }
   loadRSVPs(data.id, data.unik_id);
 

@@ -14,9 +14,6 @@ const unik_id = getParam("unik_id");
 const guestName = getParam("to");
 const currentTemplate = "s1";
 
-if (typeof umami !== "undefined" && unik_id) {
-  umami.track("Invitation Opened", { unik_id: unik_id || "default", to: guestName || "Unknown" });
-}
 let isPlaying = false;
 // ==== COVER ====
 
@@ -35,41 +32,41 @@ openBtn.addEventListener("click", () => {
 
 // ==== LOAD DATA UNDANGAN ====
 async function loadInvitation() {
-  if (!unik_id) {
-    showAlert("Parameter UNIK_ID tidak ditemukan", "error");
-    const res = await fetch("/assets/data.json");
-    const defaultData = await res.json();
-    renderInvitation(defaultData);
-    return;
-  }
+    if (!unik_id) {
+        showAlert("Parameter UNIK_ID tidak ditemukan", "error");
+        const res = await fetch("/assets/data.json");
+        const defaultData = await res.json();
+        renderInvitation(defaultData);
+        return;
+    }
 
-  const { data, error } = await supabase
-    .from("invitations")
-    .select("*")
-    .eq("unik_id", unik_id)
-    .single();
+    const { data, error } = await supabase
+        .from("invitations")
+        .select("*")
+        .eq("unik_id", unik_id)
+        .single();
 
-  if (error || !data) {
-    console.error(error);
-    showAlert("Data undangan tidak ditemukan", "error");
-    const defaultData = await res.json();
-    renderInvitation(defaultData);
-    return;
-  }
+    if (error || !data) {
+        console.error(error);
+        showAlert("Data undangan tidak ditemukan", "error");
+        const defaultData = await res.json();
+        renderInvitation(defaultData);
+        return;
+    }
 
-  // === Validasi template ===
-  if (data.template_sel && data.template_sel.trim() !== currentTemplate) {
-    console.warn(`Template tidak cocok (${data.template_sel}), memuat data default.`);
-    showAlert("Template tidak sesuai data, memuat data default.", "error");
-    const res = await fetch("/assets/data.json");
-    const defaultData = await res.json();
-    renderInvitation(defaultData);
-    return;
-  }
-  renderInvitation(data);
+    // === Validasi template ===
+    if (data.template_sel && data.template_sel.trim() !== currentTemplate) {
+        console.warn(`Template tidak cocok (${data.template_sel}), memuat data default.`);
+        showAlert("Template tidak sesuai data, memuat data default.", "error");
+        const res = await fetch("/assets/data.json");
+        const defaultData = await res.json();
+        renderInvitation(defaultData);
+        return;
+    }
+    renderInvitation(data);
 
-  // Pastikan rsvp-list langsung tampil meski belum ada ucapan
-  loadRSVPs(data.id, data.unik_id);
+    // Pastikan rsvp-list langsung tampil meski belum ada ucapan
+    loadRSVPs(data.id, data.unik_id);
 }
 
 function renderInvitation(data) {
@@ -134,6 +131,18 @@ function renderInvitation(data) {
     document.getElementById("resepsi-time").textContent = data.resepsi ? `Pukul ${data.resepsi}` : "-";
     document.getElementById("event-location").textContent = data.nama_lokasi || "-";
     document.getElementById("maps-link").href = data.url_maps || "#";
+    const mapsLink = document.getElementById("maps-link");
+    if (mapsLink && data.url_maps) {
+        mapsLink.addEventListener("click", () => {
+            if (typeof umami !== "undefined") {
+                umami.track("Open Google Maps", {
+                    unik_id: data.unik_id || "default",
+                    to: getParam("to") || "Unknown",
+                    location: data.nama_lokasi || "Unknown"
+                });
+            }
+        });
+    }
 
     // === Galeri ===
     try {
@@ -183,6 +192,12 @@ function renderInvitation(data) {
 
         addBtn.addEventListener("click", () => {
             window.open(url.toString(), "_blank");
+            if (typeof umami !== "undefined") {
+                umami.track("Add to Google Calendar", {
+                    unik_id: data.unik_id || "default",
+                    to: getParam("to") || "Unknown"
+                });
+            }
         });
     }
 
@@ -263,6 +278,18 @@ function renderInvitation(data) {
         }
     } catch (e) {
         console.error("Gift error:", e);
+    }
+    try {
+        if (typeof umami !== "undefined") {
+            const params = {
+                unik_id: data.unik_id || getParam("unik_id") || "default",
+                to: getParam("to") || "Unknown",
+                template: data.template_sel || "p1"
+            };
+            umami.track("Invitation Opened", params);
+        }
+    } catch (err) {
+        console.warn("Umami tracking failed:", err);
     }
     loadRSVPs(data.id, data.unik_id);
 }
