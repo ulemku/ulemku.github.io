@@ -10,9 +10,16 @@ const sections = ["hero", "acara", "galeri", "gift", "rsvp", "footer"];
 const cover = document.getElementById("cover");
 const openBtn = document.getElementById("open-invite");
 const bgMusic = document.getElementById("bg-music");
-
-// ==== COVER ====
+const unik_id = getParam("unik_id");
 const guestName = getParam("to");
+const currentTemplate = "s1";
+
+if (typeof umami !== "undefined" && unik_id) {
+  umami.track("Invitation Opened", { unik_id: unik_id || "default", to: guestName || "Unknown" });
+}
+let isPlaying = false;
+// ==== COVER ====
+
 document.getElementById("cover-guest").textContent = guestName || "Tamu Undangan";
 const guestLabel = document.getElementById("rsvp-guest-label");
 guestLabel.textContent = guestName ? `${guestName}` : "Tamu Undangan";
@@ -28,25 +35,41 @@ openBtn.addEventListener("click", () => {
 
 // ==== LOAD DATA UNDANGAN ====
 async function loadInvitation() {
-    const unik_id = getParam("unik_id");
-    if (!unik_id) return showAlert("Parameter ?unik_id= tidak ditemukan", "error");
+  if (!unik_id) {
+    showAlert("Parameter UNIK_ID tidak ditemukan", "error");
+    const res = await fetch("/assets/data.json");
+    const defaultData = await res.json();
+    renderInvitation(defaultData);
+    return;
+  }
 
-    const { data, error } = await supabase
-        .from("invitations")
-        .select("*")
-        .eq("unik_id", unik_id)
-        .single();
+  const { data, error } = await supabase
+    .from("invitations")
+    .select("*")
+    .eq("unik_id", unik_id)
+    .single();
 
-    if (error || !data) {
-        console.error(error);
-        showAlert("Data undangan tidak ditemukan", "error");
-        return;
-    }
+  if (error || !data) {
+    console.error(error);
+    showAlert("Data undangan tidak ditemukan", "error");
+    const defaultData = await res.json();
+    renderInvitation(defaultData);
+    return;
+  }
 
-    renderInvitation(data);
+  // === Validasi template ===
+  if (data.template_sel && data.template_sel.trim() !== currentTemplate) {
+    console.warn(`Template tidak cocok (${data.template_sel}), memuat data default.`);
+    showAlert("Template tidak sesuai data, memuat data default.", "error");
+    const res = await fetch("/assets/data.json");
+    const defaultData = await res.json();
+    renderInvitation(defaultData);
+    return;
+  }
+  renderInvitation(data);
 
-    // Pastikan rsvp-list langsung tampil meski belum ada ucapan
-    loadRSVPs(data.id, data.unik_id);
+  // Pastikan rsvp-list langsung tampil meski belum ada ucapan
+  loadRSVPs(data.id, data.unik_id);
 }
 
 function renderInvitation(data) {
@@ -59,7 +82,7 @@ function renderInvitation(data) {
     document.getElementById("couple-names").textContent = `${groomFirst} & ${brideFirst}` || "Agus & Siti";
     document.getElementById("couple-names2").textContent = `${groomFirst} & ${brideFirst}` || "Agus & Siti";
     document.getElementById("hero-bg").style.backgroundImage = `url(${data.foto_pasangan || 'https://cdn.pixabay.com/photo/2022/11/27/08/05/garland-7619074_1280.jpg'})`;
-    
+
     const coverSection = document.getElementById("cover");
     const bgMusic = document.getElementById("bg-music");
 

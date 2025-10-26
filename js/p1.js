@@ -9,10 +9,16 @@ function getParam(name) {
 const sections = ["hero", "acara", "galeri", "gift", "rsvp", "footer"];
 const cover = document.getElementById("cover");
 const openBtn = document.getElementById("open-invite");
-let isPlaying = false;
-
-// ==== COVER ====
+const unik_id = getParam("unik_id");
 const guestName = getParam("to");
+let isPlaying = false;
+const currentTemplate = "p1";
+
+if (typeof umami !== "undefined" && unik_id) {
+  umami.track("Invitation Opened", { unik_id: unik_id || "default", to: guestName || "Unknown" });
+}
+// ==== COVER ====
+
 document.getElementById("cover-guest").textContent = guestName || "Tamu Undangan";
 const guestLabel = document.getElementById("rsvp-guest-label");
 guestLabel.textContent = guestName ? `${guestName}` : "Tamu Undangan";
@@ -28,9 +34,13 @@ openBtn.addEventListener("click", () => {
 
 // ==== LOAD DATA UNDANGAN ====
 async function loadInvitation() {
-  const unik_id = getParam("unik_id");
-
-  if (!unik_id) return showAlert("Parameter ?unik_id= tidak ditemukan", "error");
+  if (!unik_id) {
+    showAlert("Parameter UNIK_ID tidak ditemukan", "error");
+    const res = await fetch("/assets/data.json");
+    const defaultData = await res.json();
+    renderInvitation(defaultData);
+    return;
+  }
 
   const { data, error } = await supabase
     .from("invitations")
@@ -41,9 +51,20 @@ async function loadInvitation() {
   if (error || !data) {
     console.error(error);
     showAlert("Data undangan tidak ditemukan", "error");
+    const defaultData = await res.json();
+    renderInvitation(defaultData);
     return;
   }
 
+  // === Validasi template ===
+  if (data.template_sel && data.template_sel.trim() !== currentTemplate) {
+    console.warn(`Template tidak cocok (${data.template_sel}), memuat data default.`);
+    showAlert("Template tidak sesuai data, memuat data default.", "error");
+    const res = await fetch("/assets/data.json");
+    const defaultData = await res.json();
+    renderInvitation(defaultData);
+    return;
+  }
   renderInvitation(data);
 
   // Pastikan rsvp-list langsung tampil meski belum ada ucapan
@@ -605,17 +626,14 @@ function launchConfetti() {
   const confetti = document.getElementById("confetti");
   if (!confetti) return;
   confetti.innerHTML = "";
-
   const colors = ["#fbbf24", "#fcd34d", "#f9a8d4", "#fde68a", "#fff"];
-  const shapes = ["circle", "square"];
+  const shapes = ["circle"];
 
   for (let i = 0; i < 40; i++) {
     const piece = document.createElement("div");
     const size = Math.random() * 10 + 6;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const shape = shapes[Math.floor(Math.random() * shapes.length)];
-    const fallDuration = Math.random() * 3 + 4; // 4–7 detik
-    const fallDelay = Math.random() * 1.5; // jeda jatuh acak
 
     piece.style.position = "absolute";
     piece.style.top = "-10px";
@@ -626,28 +644,34 @@ function launchConfetti() {
     piece.style.borderRadius = shape === "circle" ? "50%" : "0";
     piece.style.opacity = "0.9";
     piece.style.transform = `rotate(${Math.random() * 360}deg)`;
-    piece.style.animation = `fallConfetti ${fallDuration}s ease-in forwards`;
-    piece.style.animationDelay = `${fallDelay}s`;
-    piece.style.transition = "opacity 2s ease"; // transisi halus saat menghilang
+    piece.style.animation = `fallConfetti ${Math.random() * 3 + 4}s linear forwards`;
     confetti.appendChild(piece);
-
-    // fade-out lembut setelah jatuh
-    setTimeout(() => {
-      piece.style.opacity = "0";
-    }, (fallDuration + fallDelay - 1) * 1000);
   }
 
-  // hapus seluruh konfeti dengan delay agar semua fade selesai
+  // Hapus dengan efek fade-out lembut
   setTimeout(() => {
-    confetti.style.transition = "opacity 1.5s ease";
-    confetti.style.opacity = "0";
-    setTimeout(() => {
-      confetti.innerHTML = "";
-      confetti.style.opacity = "1";
-    }, 3000);
-  }, 7000);
+    confetti.querySelectorAll("div").forEach(piece => {
+      piece.style.transition = "opacity 1s ease";
+      piece.style.opacity = "0";
+    });
+    setTimeout(() => (confetti.innerHTML = ""), 1000);
+  }, 8000);
 }
 
+let confettiCooldown = false;
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  // Deteksi apakah pengguna di hero section (atas layar)
+  if (scrollTop < 80 && !confettiCooldown) {
+    launchConfetti();
+    confettiCooldown = true;
+
+    // Cooldown supaya tidak spam saat user scroll naik-turun cepat
+    setTimeout(() => (confettiCooldown = false), 2000);
+  }
+});
 
 const style = document.createElement("style");
 style.textContent = `
