@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome | Pilih Template Undangan</title>
+    <title>Selamat Datang | Pilih Template Undangan</title>
     <link rel="icon" href="./assets/icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -20,7 +20,7 @@
         }
 
         .hero {
-            background: url('https://cdn.pixabay.com/photo/2020/09/19/09/39/wedding-5584003_1280.jpg') center/cover no-repeat;
+            background: url('https://res.cloudinary.com/dv1zfufdt/image/upload/v1761499744/couple4_zekmhu.jpg') center/cover no-repeat;
             position: relative;
         }
 
@@ -87,8 +87,7 @@
     <!-- Hero Section -->
     <section class="hero h-[70vh] flex items-center justify-center text-center text-white">
         <div class="hero-content">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">Selamat Datang di <span class="text-yellow-300">Digital
-                    Invitation</span></h1>
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Selamat Datang di <span class="text-yellow-300">Ulemku Digital</span></h1>
             <p class="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto">
                 Pilih template undangan pernikahan terbaik untuk momen istimewa Anda.
             </p>
@@ -108,7 +107,7 @@
 
             <!-- Template 1 -->
             <div class="card">
-                <img src="./assets/bg1.jpg" alt="Template Standar" class="w-full h-52 object-cover">
+                <img src="https://res.cloudinary.com/dv1zfufdt/image/upload/v1761502112/screenshot-1761501786805_aexs6u.jpg" alt="Template Standar" class="w-full h-52 object-cover">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Standar Elegan</h3>
                     <p class="text-gray-600 mb-4">Desain sederhana namun tetap elegan, cocok untuk pernikahan dengan
@@ -128,7 +127,7 @@
 
             <!-- Template 2 -->
             <div class="card">
-                <img src="./assets/bg4.jpg" alt="Template Premium" class="w-full h-52 object-cover">
+                <img src="https://res.cloudinary.com/dv1zfufdt/image/upload/v1761502112/screenshot-1761501652974_rscjho.jpg" alt="Template Premium" class="w-full h-52 object-cover">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-gray-800 mb-2">Premium Modern</h3>
                     <p class="text-gray-600 mb-4">Desain mewah dan dinamis dengan animasi halus, cocok untuk pernikahan
@@ -166,7 +165,7 @@
 
     <!-- Footer -->
     <footer>
-        &copy; 2025 Digital Invitation | Crafted with ❤️ by Alextian Creative
+        &copy; <span id="currentYear"></span> <strong>Ulemku</strong> Digital<br>Created with ❤️ by <a href="https://creativevector.store/" class="underline"><strong>CreatiVector</strong></a>
     </footer>
 
     <!-- Smooth scroll -->
@@ -179,6 +178,7 @@
                 });
             });
         });
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 </body>
 

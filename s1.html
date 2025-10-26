@@ -12,24 +12,26 @@
     <script defer src="https://cloud.umami.is/script.js"
         data-website-id="023a8e60-fc10-4a56-8a68-eb52460eda65"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.6/dist/umd/supabase.min.js"></script>
 </head>
 
 <!-- s1?unik_id=adam-hawa&to=Joko%20dan%20Sari -->
- 
+
 <!-- LOADING OVERLAY -->
 <div id="loading-screen">
-  <div class="loader-content">
-    <div class="loader-ring"></div>
-    <p class="loader-text">Menyiapkan Undangan...</p>
-  </div>
+    <div class="loader-content">
+        <div class="loader-ring"></div>
+        <p class="loader-text">Menyiapkan Undangan...</p>
+    </div>
 </div>
 
 <body class="bg-slate-50 text-slate-800 font-sans">
     <div id="globalAlertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
     <div id="confetti" class="confetti"></div>
+
     <!-- <div id="floral" class="floral"></div> -->
-     
+
     <!-- ==== COVER PEMBUKA ==== -->
     <section id="cover"
         class="fixed inset-0 flex flex-col justify-center items-center text-center bg-cover bg-center text-white z-50 transition-all duration-700"
@@ -52,6 +54,12 @@
         </div>
     </section>
 
+    <button id="music-toggle" aria-label="Pause music" title="Pause / Play Musik"
+        class="fixed z-50 right-4 bottom-20 w-12 h-12 rounded-full shadow-lg bg-white flex items-center justify-center">
+        <!-- icon inserted by JS -->
+        <i id="music-icon" class="fa-solid fa-music fa-bounce"></i>
+    </button>
+    
     <!-- ==== KONTEN UNDANGAN ==== -->
     <section id="hero"
         class="relative min-h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden hidden">
@@ -194,11 +202,10 @@
 
     </section>
     <footer class="text-center text-slate-500 text-sm py-4 mb-15">
-        Created with ❤️ by <a href="https://creativevector.store/" class="underline">CreatiVector</a><br>Contact Person
-        :<br><a href="mailto:info@creativevector.store?subject=SeratUlem Info" class="underline"
-            target="_blank">Email</a> | <a href="https://wa.me/628975650444" class="underline"
-            target="_blank">WhatsApp</a><br>Images and audio by <a
-            href="https://pixabay.com/users/hansuan_fabregas-2902307/" class="underline">Hansuan_Fabregas</a>, <a
+        Created with ❤️ by <a href="https://creativevector.store/"
+            class="underline"><strong>CreatiVector</strong></a><br>
+        <a href="/" class="underline" target="_blank"><strong>Choose Template</strong></a><br>Images and audio default
+        by <a href="https://pixabay.com/users/hansuan_fabregas-2902307/" class="underline">Hansuan_Fabregas</a>, <a
             href="https://pixabay.com/illustrations/flowers-floral-design-pattern-5773524/" class="underline">Kollsd</a>
         and <a href="https://pixabay.com/music/modern-classical-pure-love-304010/" class="underline">Pure Love audio</a>
         on <a href="https://pixabay.com/" class="underline">Pixabay</a>

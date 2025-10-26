@@ -9,10 +9,8 @@ function getParam(name) {
 const sections = ["hero", "acara", "galeri", "gift", "rsvp", "footer"];
 const cover = document.getElementById("cover");
 const openBtn = document.getElementById("open-invite");
-const bgMusic = document.getElementById("bg-music");
-const toggleBtn = document.getElementById("music-toggle");
-const icon = document.getElementById("music-icon");
 let isPlaying = false;
+
 // ==== COVER ====
 const guestName = getParam("to");
 document.getElementById("cover-guest").textContent = guestName || "Tamu Undangan";
@@ -31,7 +29,7 @@ openBtn.addEventListener("click", () => {
 // ==== LOAD DATA UNDANGAN ====
 async function loadInvitation() {
   const unik_id = getParam("unik_id");
-  
+
   if (!unik_id) return showAlert("Parameter ?unik_id= tidak ditemukan", "error");
 
   const { data, error } = await supabase
@@ -71,7 +69,33 @@ function renderInvitation(data) {
       <h1 class="stack-center"><i class="fa-regular fa-heart fa-rotate-by" style="color: #ff0000; --fa-rotate-angle: -15deg;"></i></h1>`
   document.getElementById("couple-names2").textContent = `${groomFirst} & ${brideFirst}` || "Agus & Siti";
   document.getElementById("hero-bg").style.backgroundImage = `url(${data.foto_pasangan || 'https://cdn.pixabay.com/photo/2022/11/27/08/05/garland-7619074_1280.jpg'})`;
+  // === Cover background & music custom ===
+  const coverSection = document.getElementById("cover");
+  const bgMusic = document.getElementById("bg-music");
 
+  // Jika ada cover_url, ganti background cover
+  if (data.cover_url && data.cover_url.trim() !== "") {
+    coverSection.style.backgroundImage = `url(${data.cover_url})`;
+  }
+
+  // Jika ada custom_audio, ganti musik background
+  if (data.custom_audio && data.custom_audio.trim() !== "") {
+    const source = bgMusic.querySelector("source");
+    source.src = data.custom_audio;
+    bgMusic.load();
+  }
+
+  const weddingFrame = document.getElementById("wedding-frame");
+  if (weddingFrame) {
+    if (data.cover_url && data.cover_url.trim() !== "") {
+      weddingFrame.style.display = "block";
+    } else {
+      weddingFrame.style.display = "none";
+    }
+  }
+  if (weddingFrame && !data.cover_url) {
+    weddingFrame.style.display = "block";
+  }
   // === Event Date ===
   const eventDate = new Date(data.tanggal_nikah + "T00:00:00");
   const eventDateStr = eventDate.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -213,7 +237,7 @@ function renderInvitation(data) {
             div.innerHTML = `
              <i class="fa-solid fa-gift gift-icon"></i>
               <h4 class="gift-send-title mb-4">${info.Via}</h4>
-              <div class="title-ornament"></div>
+              <div class="title-ornament bg-slate-200"></div>
             <p class="gift-send-name"><strong>${info.Name}</strong></p>
             <p class="gift-send-address">${info.Number}<br>${info.Address || "-"}</p>
             <button onclick="copyText('${info.Address}')" class="gift-btn">
@@ -443,25 +467,69 @@ function startCountdown2(targetDate) {
   const timer = setInterval(updateCountdown, 1000);
 }
 
-// === Music Control ===
-toggleBtn.addEventListener("click", () => {
-  if (isPlaying) {
-    bgMusic.play();
-    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18V6M18 18V6"/>';
-  } else {
-    bgMusic.pause();
-    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5v14l11-7z"/>';
+// === MUSIC CONTROL ===
+const bgMusic = document.getElementById("bg-music");
+const musicToggle = document.getElementById("music-toggle");
+const musicIcon = document.getElementById("music-icon");
 
-  }
-  isPlaying = !isPlaying;
-});
+let wasPlayingBeforeHide = false;
 
-// Pause when tab not visible
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden && isPlaying) {
-    bgMusic.pause();
-  }
-});
+if (musicToggle) musicToggle.classList.add("hidden");
+
+if (openBtn && bgMusic) {
+  openBtn.addEventListener("click", async () => {
+    try {
+      // Mainkan musik
+      await bgMusic.play();
+      // Tampilkan tombol musik dengan animasi halus
+      musicToggle.classList.remove("hidden");
+      musicToggle.classList.add("animate-bounce-in");
+    } catch (err) {
+      console.warn("Autoplay blocked, user gesture required:", err);
+    }
+  });
+}
+
+// --- Tombol manual toggle musik ---
+if (musicToggle && bgMusic) {
+  musicToggle.addEventListener("click", () => {
+    if (bgMusic.paused) {
+      bgMusic.play().catch(() => { });
+      musicIcon.classList.remove("fa-play");
+      musicIcon.classList.add("fa-music", "fa-bounce");
+    } else {
+      bgMusic.pause();
+      musicIcon.classList.remove("fa-music", "fa-bounce");
+      musicIcon.classList.add("fa-play");
+    }
+  });
+
+  // --- Event: Tab keluar fokus / aplikasi di-minimize ---
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (!bgMusic.paused) {
+        wasPlayingBeforeHide = true;
+        bgMusic.pause();
+      }
+    } else if (wasPlayingBeforeHide) {
+      bgMusic.play().catch(() => { });
+      wasPlayingBeforeHide = false;
+    }
+  });
+
+  window.addEventListener("blur", () => {
+    if (!bgMusic.paused) {
+      wasPlayingBeforeHide = true;
+      bgMusic.pause();
+    }
+  });
+  window.addEventListener("focus", () => {
+    if (wasPlayingBeforeHide) {
+      bgMusic.play().catch(() => { });
+      wasPlayingBeforeHide = false;
+    }
+  });
+}
 // === Kirim balasan ke Supabase ===
 async function submitReply(parentId, message) {
   const name = guestName || "Tamu";
@@ -537,6 +605,7 @@ function launchConfetti() {
   const confetti = document.getElementById("confetti");
   if (!confetti) return;
   confetti.innerHTML = "";
+
   const colors = ["#fbbf24", "#fcd34d", "#f9a8d4", "#fde68a", "#fff"];
   const shapes = ["circle", "square"];
 
@@ -545,6 +614,8 @@ function launchConfetti() {
     const size = Math.random() * 10 + 6;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const fallDuration = Math.random() * 3 + 4; // 4–7 detik
+    const fallDelay = Math.random() * 1.5; // jeda jatuh acak
 
     piece.style.position = "absolute";
     piece.style.top = "-10px";
@@ -555,12 +626,28 @@ function launchConfetti() {
     piece.style.borderRadius = shape === "circle" ? "50%" : "0";
     piece.style.opacity = "0.9";
     piece.style.transform = `rotate(${Math.random() * 360}deg)`;
-    piece.style.animation = `fallConfetti ${Math.random() * 3 + 4}s linear infinite`;
+    piece.style.animation = `fallConfetti ${fallDuration}s ease-in forwards`;
+    piece.style.animationDelay = `${fallDelay}s`;
+    piece.style.transition = "opacity 2s ease"; // transisi halus saat menghilang
     confetti.appendChild(piece);
+
+    // fade-out lembut setelah jatuh
+    setTimeout(() => {
+      piece.style.opacity = "0";
+    }, (fallDuration + fallDelay - 1) * 1000);
   }
 
-  setTimeout(() => (confetti.innerHTML = ""), 7000);
+  // hapus seluruh konfeti dengan delay agar semua fade selesai
+  setTimeout(() => {
+    confetti.style.transition = "opacity 1.5s ease";
+    confetti.style.opacity = "0";
+    setTimeout(() => {
+      confetti.innerHTML = "";
+      confetti.style.opacity = "1";
+    }, 3000);
+  }, 7000);
 }
+
 
 const style = document.createElement("style");
 style.textContent = `

@@ -59,7 +59,21 @@ function renderInvitation(data) {
     document.getElementById("couple-names").textContent = `${groomFirst} & ${brideFirst}` || "Agus & Siti";
     document.getElementById("couple-names2").textContent = `${groomFirst} & ${brideFirst}` || "Agus & Siti";
     document.getElementById("hero-bg").style.backgroundImage = `url(${data.foto_pasangan || 'https://cdn.pixabay.com/photo/2022/11/27/08/05/garland-7619074_1280.jpg'})`;
+    
+    const coverSection = document.getElementById("cover");
+    const bgMusic = document.getElementById("bg-music");
 
+    // Jika ada cover_url, ganti background cover
+    if (data.cover_url && data.cover_url.trim() !== "") {
+        coverSection.style.backgroundImage = `url(${data.cover_url})`;
+    }
+
+    // Jika ada custom_audio, ganti musik background
+    if (data.custom_audio && data.custom_audio.trim() !== "") {
+        const source = bgMusic.querySelector("source");
+        source.src = data.custom_audio;
+        bgMusic.load();
+    }
     // === Event Date ===
     const eventDate = new Date(data.tanggal_nikah + "T00:00:00");
     const eventDateStr = eventDate.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -465,7 +479,68 @@ function startFloral() {
     }
     setTimeout(startFloral, 1500); // loop pelan-pelan
 }
+// === MUSIC CONTROL ===
+const musicToggle = document.getElementById("music-toggle");
+const musicIcon = document.getElementById("music-icon");
 
+let wasPlayingBeforeHide = false;
+
+if (musicToggle) musicToggle.classList.add("hidden");
+
+if (openBtn && bgMusic) {
+    openBtn.addEventListener("click", async () => {
+        try {
+            // Mainkan musik
+            await bgMusic.play();
+            // Tampilkan tombol musik dengan animasi halus
+            musicToggle.classList.remove("hidden");
+            musicToggle.classList.add("animate-bounce-in");
+        } catch (err) {
+            console.warn("Autoplay blocked, user gesture required:", err);
+        }
+    });
+}
+
+// --- Tombol manual toggle musik ---
+if (musicToggle && bgMusic) {
+    musicToggle.addEventListener("click", () => {
+        if (bgMusic.paused) {
+            bgMusic.play().catch(() => { });
+            musicIcon.classList.remove("fa-play");
+            musicIcon.classList.add("fa-music", "fa-bounce");
+        } else {
+            bgMusic.pause();
+            musicIcon.classList.remove("fa-music", "fa-bounce");
+            musicIcon.classList.add("fa-play");
+        }
+    });
+
+    // --- Event: Tab keluar fokus / aplikasi di-minimize ---
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            if (!bgMusic.paused) {
+                wasPlayingBeforeHide = true;
+                bgMusic.pause();
+            }
+        } else if (wasPlayingBeforeHide) {
+            bgMusic.play().catch(() => { });
+            wasPlayingBeforeHide = false;
+        }
+    });
+
+    window.addEventListener("blur", () => {
+        if (!bgMusic.paused) {
+            wasPlayingBeforeHide = true;
+            bgMusic.pause();
+        }
+    });
+    window.addEventListener("focus", () => {
+        if (wasPlayingBeforeHide) {
+            bgMusic.play().catch(() => { });
+            wasPlayingBeforeHide = false;
+        }
+    });
+}
 
 // ==== TAB BAWAH ====
 document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -508,19 +583,19 @@ const zoomObserver = new IntersectionObserver(
 );
 // === LOADING SCREEN CONTROL ===
 document.addEventListener("DOMContentLoaded", () => {
-  const loadingScreen = document.getElementById("loading-screen");
+    const loadingScreen = document.getElementById("loading-screen");
 
-  // Simulasi delay agar semua teks & animasi siap (2.5 detik)
-  setTimeout(() => {
-    loadingScreen.classList.add("hidden");
-  }, 2500); // bisa diubah ke 2000–3000 ms sesuai kebutuhan
-
-  // Jika data Supabase selesai sebelum 2.5s, pastikan tetap menunggu
-  window.addEventListener("invitationLoaded", () => {
+    // Simulasi delay agar semua teks & animasi siap (2.5 detik)
     setTimeout(() => {
-      loadingScreen.classList.add("hidden");
-    }, 800);
-  });
+        loadingScreen.classList.add("hidden");
+    }, 2500); // bisa diubah ke 2000–3000 ms sesuai kebutuhan
+
+    // Jika data Supabase selesai sebelum 2.5s, pastikan tetap menunggu
+    window.addEventListener("invitationLoaded", () => {
+        setTimeout(() => {
+            loadingScreen.classList.add("hidden");
+        }, 800);
+    });
 });
 
 zoomEls.forEach(el => zoomObserver.observe(el));

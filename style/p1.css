@@ -563,6 +563,26 @@ button:hover svg {
   }
 }
 
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.8s ease;
+}
+
 .btn-bounce {
   display: inline-flex;
   align-items: center;
@@ -707,6 +727,22 @@ button:hover svg {
   animation: fall 8s linear infinite;
 }
 
+@keyframes fallConfetti {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
 @keyframes fall {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -719,6 +755,35 @@ button:hover svg {
   }
 }
 
+/* Wedding Frame Overlay */
+#wedding-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 6; /* di atas overlay hitam tapi di bawah teks */
+  background-image: url('/assets/frame-7090489_1280.png'); /* pastikan file ada */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 100, 0.7));
+  animation: frameGlow 5s ease-in-out infinite alternate;
+}
+
+@keyframes frameGlow {
+  0% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 5px rgba(255, 230, 160, 0.4));
+  }
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(255, 220, 120, 0.9));
+  }
+}
+
+.glowing-text {
+  filter: drop-shadow(0 0 14px rgba(255, 220, 120, 0.9));
+  color: #ffe1a9;
+}
 /* === SECTION SHADOW (Bayangan di bawah setiap section) === */
 .section-shadow {
   position: relative;
