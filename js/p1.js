@@ -325,9 +325,9 @@ function renderInvitation(data) {
   try {
     if (typeof umami !== "undefined") {
       const params = {
-        unik_id: data.unik_id || getParam("unik_id") || "default",
-        to: getParam("to") || "Unknown",
-        template: data.template_sel || "p1"
+        unik_id: data.unik_id || unik_id || "default",
+        to: guestName || "Unknown",
+        template: data.template_sel || currentTemplate || "no template"
       };
       umami.track("Invitation Opened", params);
     }
