@@ -104,17 +104,18 @@ function renderInvitation(data) {
   const coverSection = document.getElementById("cover");
   const bgMusic = document.getElementById("bg-music");
 
-  // Jika ada cover_url, ganti background cover
+  // BACKGROUND_COVER
   if (data.cover_url && data.cover_url.trim() !== "") {
     coverSection.style.backgroundImage = `url(${data.cover_url})`;
   }
 
-  // Jika ada custom_audio, ganti musik background
+  const source = bgMusic.querySelector("source");
   if (data.custom_audio && data.custom_audio.trim() !== "") {
-    const source = bgMusic.querySelector("source");
     source.src = data.custom_audio;
-    bgMusic.load();
+  } else {
+    source.src = source.src || "./assets/pure-love-304010.mp3";
   }
+  bgMusic.load();
 
   const weddingFrame = document.getElementById("wedding-frame");
   if (weddingFrame) {

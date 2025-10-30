@@ -101,12 +101,14 @@ function renderInvitation(data) {
         coverSection.style.backgroundImage = `url(${data.cover_url})`;
     }
 
-    // Jika ada custom_audio, ganti musik background
+    const source = bgMusic.querySelector("source");
     if (data.custom_audio && data.custom_audio.trim() !== "") {
-        const source = bgMusic.querySelector("source");
         source.src = data.custom_audio;
-        bgMusic.load();
+    } else {
+        source.src = source.src || "./assets/pure-love-304010.mp3";
     }
+    bgMusic.load();
+    
     // === Event Date ===
     const eventDate = new Date(data.tanggal_nikah + "T00:00:00");
     const eventDateStr = eventDate.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
