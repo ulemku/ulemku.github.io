@@ -17,6 +17,19 @@ const currentTemplate = "s1";
 let isPlaying = false;
 // ==== COVER ====
 
+document.addEventListener("DOMContentLoaded", () => {
+    const nameInput = document.getElementById("rsvp-name-input");
+    const guestLabel = document.getElementById("rsvp-guest-label");
+
+    if (guestName) {
+        nameInput.classList.add("hidden");   // Hide input kalau URL pakai ?to=
+        guestLabel.textContent = guestName;
+    } else {
+        nameInput.classList.remove("hidden"); // Tampilkan input nama
+        guestLabel.textContent = "Tamu Undangan";
+    }
+});
+
 document.getElementById("cover-guest").textContent = guestName || "Tamu Undangan";
 const guestLabel = document.getElementById("rsvp-guest-label");
 guestLabel.textContent = guestName ? `${guestName}` : "Tamu Undangan";
@@ -439,7 +452,14 @@ document.getElementById("submit-rsvp").addEventListener("click", async () => {
     const attendance = document.getElementById("attendance-input").value;
     const message = document.getElementById("message-input").value.trim();
     const unik_id = getParam("unik_id");
-    const name = guestName || "Tamu Undangan";
+    let name = guestName; // dari URL
+
+    // Jika tidak ada parameter ?to= maka pakai input nama
+    const manualName = document.getElementById("rsvp-name-input").value.trim();
+    if (!name || name === "Tamu Undangan") {
+        name = manualName || "Tamu Undangan"; // default jika kosong
+    }
+
 
     if (!attendance) return showAlert("Silakan pilih kehadiran Anda.", "info");
     if (!message) return showAlert("Silakan tulis ucapan atau doa.", "info");
